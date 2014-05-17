@@ -10,73 +10,27 @@
         background-color: white;
         font-size: 0;
       }
+      #controls{
+        font-family: monospace;
+        font-size: 16px;
+        position: absolute;
+        top:0;
+        left: 0;
+      }
     </style>
     <script src="bower_components/pixi/bin/pixi.js"></script>
     <script src="coffee-script.js"></script>
     <script type="text/coffeescript" src="utility.coffee"></script>
     <script type="text/coffeescript" src="Matrix.coffee"></script>
     <script type="text/coffeescript" src="Heightmap.coffee"></script>
+    <script type="text/coffeescript" src="Isometry.coffee"></script>
   </head>
   <body>
-    <script type="text/coffeescript">
-      width = window.innerWidth
-      height = window.innerHeight
-      stage = new PIXI.Stage 0xefffff
-      renderer = PIXI.autoDetectRenderer width, height
-      document.body.appendChild renderer.view
-
-      loader = new PIXI.AssetLoader ['images/tiles.json']
-
-      G = 0
-      D = 1
-      W = 2
-      terrain = [
-        [G, G, G, G, W]
-        [D, D, G, G, W]
-        [D, G, G, W, W]
-        [D, G, W, W, W]
-        [G, G, W, W, W]
-      ]
-
-      tileHeight = 50
-      tileWidth = 50
-
-      isoTile = (file) -> (x, y) ->
-        tile = PIXI.Sprite.fromFrame file
-        tile.position.x = x
-        tile.position.y = y
-
-        tile.anchor.x = 0
-        tile.anchor.y = 1
-        stage.addChild tile
-
-      grass = isoTile 'grass'
-      dirt = isoTile 'dirt'
-      water = isoTile 'water'
-      sand = isoTile 'beach'
-      tileMethods = [grass, dirt, water, sand]
-
-      drawMap = (terrain, xOffset, yOffset) ->
-        for i in [0..terrain.length-1] by 1
-          for j in [0..terrain[i].length-1] by 1
-            x = j * tileWidth
-            y = i * tileHeight
-
-            isoX = x-y
-            isoY = (x+y)/2
-
-            tileType = terrain[i][j]
-            drawTile = tileMethods[tileType]
-            drawTile isoX+xOffset, isoY + yOffset
-
-      loader.onComplete = ->
-        drawMap terrain, width/2, tileHeight * 1.5
-        animate = ->
-          requestAnimFrame animate
-          renderer.render stage
-        requestAnimFrame animate
-      loader.load()
-        
-    </script>
+    <div id="controls">
+      <div>Width: <input type="text" id="userWidth" value="5"></div>
+      <div>Depth: <input type="text" id="userDepth" value="10"></div>
+      <button id="redraw">Redraw</button>
+    </div>
+    <script type="text/coffeescript" src="main.coffee"></script>
   </body>
 </html>

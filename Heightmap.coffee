@@ -8,7 +8,6 @@ class window.Heightmap extends Matrix
     super dim, dim
     start = Math.log(dim) / Math.log(2) - detail + 1
 
-    console.log @seed
     rand = gen_srand(@seed)
     for i in [0..detail-1]
       regionDim = Math.pow(2,start+i)
@@ -18,6 +17,6 @@ class window.Heightmap extends Matrix
           adjustment = rand() * Math.pow(persistence, i)
           @setArea size, size, x, y, (val) -> val + adjustment
     @mat = @mat.map (val) ->
-      if val < 1 then 0
+      if val < 1 then 1
       else 1 + Math.floor((val-1)/(detail-1) * maxHeight)
     @map = @getArea width, depth
