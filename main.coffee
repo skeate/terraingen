@@ -19,7 +19,8 @@ document.body.appendChild renderer.view
 
 loader = new PIXI.AssetLoader ['images/tiles.json']
 
-terrain = new Heightmap 5, 10, 10
+#terrain = new PerlinHeightmap 5, 10, 20, 11, 4, .618
+terrain = new DescendingHeightmap 5, 10, 20, 1, .1, 5
 iso = new Isometry terrain.map.width, terrain.map.height, 20, 50, 50, 15, 'NE'
 console.log "render width: "+iso.cartesianWidth
 console.log "page width: "+width
@@ -56,8 +57,8 @@ drawMap = (terrain, xOffset, yOffset) ->
       neighbors = [
         { dir: "north", height: if y < terrain.map.height-1 then terrain.map.get x, y+1 else null }
         { dir: "east", height: if x < terrain.map.width-1 then terrain.map.get x+1, y else null }
-        { dir: "south", height: if y > 1 then terrain.map.get x, y-1 else null }
-        { dir: "west", height: if x > 1 then terrain.map.get x-1, y else null }
+        { dir: "south", height: if y > 0 then terrain.map.get x, y-1 else null }
+        { dir: "west", height: if x > 0 then terrain.map.get x-1, y else null }
       ]
       neighbors = neighbors.map (n) ->
         newN = dir: n.dir
@@ -95,9 +96,13 @@ loader.onComplete = ->
 loader.load()
 
 document.getElementById("redraw").addEventListener "click", ->
-  _width = document.getElementById("userWidth").value
-  _depth = document.getElementById("userDepth").value
+  _width = parseInt document.getElementById("width").value
+  _depth = parseInt document.getElementById("depth").value
+  _height = parseInt document.getElementById("maxHeight").value
+  _seed = parseInt document.getElementById("seed").value
+  _incline = parseFloat document.getElementById("incline").value
+  _drop = parseInt document.getElementById("maxDrop").value
   while world.children.length
     world.removeChild world.getChildAt 0
-  terrain = new Heightmap _width, _depth, 20
+  terrain = new DescendingHeightmap _width, _depth, _height, _seed, _incline, _drop
   drawMap terrain, (width-iso.cartesianWidth)/2, (height-iso.cartesianHeight)/2

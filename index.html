@@ -11,14 +11,21 @@
         font-size: 0;
       }
       #controls{
-        font-family: monospace;
+        font-family: sans-serif;
         font-size: 16px;
         position: absolute;
         top:0;
         left: 0;
       }
+      #controls > div > span{
+        text-align: right;
+        width: 150px;
+        display: inline-block;
+      }
+      button{ margin-left: 150px; }
     </style>
     <script src="bower_components/pixi/bin/pixi.js"></script>
+    <script src="MersenneTwister.js"></script>
     <script src="coffee-script.js"></script>
     <script type="text/coffeescript" src="utility.coffee"></script>
     <script type="text/coffeescript" src="Matrix.coffee"></script>
@@ -27,8 +34,30 @@
   </head>
   <body>
     <div id="controls">
-      <div>Width: <input type="text" id="userWidth" value="5"></div>
-      <div>Depth: <input type="text" id="userDepth" value="10"></div>
+      <div>
+        <span>Width:</span>
+        <input type="text" id="width" value="5">
+      </div>
+      <div>
+        <span>Depth:</span>
+        <input type="text" id="depth" value="10">
+      </div>
+      <div>
+        <span>Max Height:</span>
+        <input type="text" id="maxHeight" value="20">
+      </div>
+      <div>
+        <span>Seed:</span>
+        <input type="text" id="seed" value="1">
+      </div>
+      <div>
+        <span>Incline Chance:</span>
+        <input type="text" id="incline" value=".1">
+      </div>
+      <div>
+        <span>Max Drop:</span>
+        <input type="text" id="maxDrop" value="5">
+      </div>
       <button id="redraw">Redraw</button>
     </div>
     <script type="text/coffeescript" src="main.coffee"></script>
